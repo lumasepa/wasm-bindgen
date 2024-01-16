@@ -130,6 +130,7 @@ fn main() -> anyhow::Result<()> {
 
     let headless = env::var("NO_HEADLESS").is_err();
     let debug = env::var("WASM_BINDGEN_NO_DEBUG").is_err();
+    let keep_debug = env::var("WASM_BINDGEN_KEEP_DEBUG").is_ok();
 
     // Gracefully handle requests to execute only node or only web tests.
     let node = test_mode == TestMode::Node;
@@ -189,7 +190,7 @@ fn main() -> anyhow::Result<()> {
 
     b.debug(debug)
         .input_module(module, wasm)
-        .keep_debug(false)
+        .keep_debug(keep_debug)
         .emit_start(false)
         .generate(&tmpdir)
         .context("executing `wasm-bindgen` over the wasm file")?;
